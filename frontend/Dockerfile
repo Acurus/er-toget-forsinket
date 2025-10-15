@@ -18,13 +18,9 @@ RUN apt-get update && apt-get install -y apt-transport-https ca-certificates cur
     apt-get update && \
     apt-get -y install doppler
 
-# Copy SvelteKit output
-COPY --from=builder /app/.svelte-kit/output .svelte-kit/output/
+COPY --from=builder /app/build build/
 COPY --from=builder /app/node_modules node_modules/
 COPY package.json .
 EXPOSE 3000
 ENV NODE_ENV=production
-
-# You need to use the correct start command for your adapter.
-# For adapter-node, it would be:
-CMD ["node", ".svelte-kit/output/server/index.js"]
+CMD [ "node", "build" ]
