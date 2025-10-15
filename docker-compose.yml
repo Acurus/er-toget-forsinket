@@ -2,8 +2,10 @@
 services:
   backend-api:
     image: backend:latest
+    depends_on:
+      - "database"
     build:
-      context: ./er-toget-forsinket-api
+      context: ./backend/er-toget-forsinket-api
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
@@ -17,6 +19,7 @@ services:
     image: frontend:latest
     depends_on:
       - "backend-api"
+      - "database"
     environment:
       PUBLIC_BACKEND_BASE_URL: ${PUBLIC_BACKEND_BASE_URL}
       ORIGIN: ${ORIGIN}
@@ -25,3 +28,14 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+  database:
+    container_name: postgis_database
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_MASTER_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432" # Exposing Postgres port
+volumes:
+  postgres_data:

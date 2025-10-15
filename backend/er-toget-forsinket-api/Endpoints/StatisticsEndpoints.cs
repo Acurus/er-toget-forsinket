@@ -10,7 +10,7 @@ public class StatisticsEndpoints
     public static void RegisterEndpoints(WebApplication app)
     {
         app.MapGet("statistics/get_delayed_trains",
-                async (ClaimsPrincipal user, string userId1, string userId2, IStatisticsService statisticsService) =>
+                async (IStatisticsService statisticsService) =>
                 {
                     var res = await statisticsService.GetDelayedTrains();
                     return res.Match(
