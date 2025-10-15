@@ -9,7 +9,6 @@ RUN npm prune --production
 FROM node:22-bookworm-slim
 WORKDIR /app
 
-# install system dependencies
 RUN apt-get update && apt-get install -y netcat-traditional
 
 # Install Doppler CLI
@@ -19,9 +18,13 @@ RUN apt-get update && apt-get install -y apt-transport-https ca-certificates cur
     apt-get update && \
     apt-get -y install doppler
 
-COPY --from=builder /app/build build/
+# Copy SvelteKit output
+COPY --from=builder /app/.svelte-kit/output .svelte-kit/output/
 COPY --from=builder /app/node_modules node_modules/
 COPY package.json .
 EXPOSE 3000
 ENV NODE_ENV=production
-CMD [ "node", "build" ]
+
+# You need to use the correct start command for your adapter.
+# For adapter-node, it would be:
+CMD ["node", ".svelte-kit/output/server/index.js"]

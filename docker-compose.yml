@@ -5,7 +5,7 @@ services:
     depends_on:
       - "database"
     build:
-      context: ./backend/er-toget-forsinket-api
+      context: ./backend
       dockerfile: Dockerfile
     ports:
       - "8080:8080"

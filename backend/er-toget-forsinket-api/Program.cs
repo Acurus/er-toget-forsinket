@@ -61,7 +61,7 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.PostgreSQL(
         connectionString,
         schemaName: "logs",
-        tableName: "er-toget-forsinket-backend",
+        tableName: "er_toget_forsinket_backend",
         columnOptions: columnWriters,
         needAutoCreateTable: false)
     .CreateLogger();
