@@ -1,0 +1,27 @@
+
+services:
+  backend-api:
+    image: backend:latest
+    build:
+      context: ./er-toget-forsinket-api
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    user: "1000:1000"
+    environment:
+      POSTGRES_DATABASE: ${POSTGRES_DATABASE}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+  frontend:
+    image: frontend:latest
+    depends_on:
+      - "backend-api"
+    environment:
+      PUBLIC_BACKEND_BASE_URL: ${PUBLIC_BACKEND_BASE_URL}
+      ORIGIN: ${ORIGIN}
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
