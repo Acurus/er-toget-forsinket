@@ -18,7 +18,7 @@ public class StatisticsService : IStatisticsService
     {
         return await Task.FromResult(new GetDelayedTrainsResponse
         {
-            numberOfdelayedTrains = 5,
+            numberOfdelayedTrains = 50,
             timeSinceLastDelayMinutes = 15
         });
     }
