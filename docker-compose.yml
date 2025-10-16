@@ -9,7 +9,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
-    user: "1000:1000"
     environment:
       POSTGRES_DATABASE: ${POSTGRES_DATABASE}
       POSTGRES_HOST: ${POSTGRES_HOST}
@@ -21,7 +20,7 @@ services:
       - "backend-api"
       - "database"
     environment:
-      PUBLIC_BACKEND_BASE_URL: ${PUBLIC_BACKEND_BASE_URL}
+      PUBLIC_BACKEND_BASE_URL: http://backend-api:8080
       ORIGIN: ${ORIGIN}
     build:
       context: ./frontend
