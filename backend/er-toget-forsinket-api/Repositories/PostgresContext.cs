@@ -20,6 +20,6 @@ public class PostgresContext : DbContext
         modelBuilder.ApplyConfiguration(new EstimatedTimetableRawConfiguration());
         modelBuilder.ApplyConfiguration(new SituationExchangeRawConfiguration());
         modelBuilder.ApplyConfiguration(new SituationExchangeConfiguration());
-        modelBuilder.ApplyConfiguration(new AffectedVehicleJourneyConfiguration());
+        modelBuilder.ApplyConfiguration(new AffectedStopPointEntryConfiguration());
     }
 }

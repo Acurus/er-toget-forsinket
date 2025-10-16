@@ -16,15 +16,20 @@ public class SituationExchange
     [Column("priority")] public int? Priority { get; set; }
 
     [Column("situation_number")] public string? SituationNumber { get; set; }
+    [Column("progress")] public string? Progress { get; set; }
+    [Column("report_type")] public string? ReportType { get; set; }
 
     [Column("version")] public string? Version { get; set; }
+    [Column("start_time")] public string? StartTime { get; set; }
+    [Column("end_time")]public string? EndTime { get; set; }
 
     [Column("versioned_at_time")] public string? VersionedAtTime { get; set; }
 
     [Column("summary_no")] public string? SummaryNo { get; set; }
+    [Column("description_no")] public string? DescriptionNo { get; set; }
 
     // Navigation property
-    public List<AffectedVehicleJourney> AffectedJourneys { get; set; } = new();
+    public List<AffectedStopPointEntry> AffectedStopPoints { get; set; } = new();
 }
 
 public class SituationExchangeConfiguration : IEntityTypeConfiguration<SituationExchange>

@@ -36,34 +36,39 @@ public class TrainDelaysService : ITrainDelaysService
     {
         XNamespace ns = "http://www.siri.org.uk/siri";
         var doc = XDocument.Parse(xmlString);
+        var validityPeriod = doc.Root?.Element(ns + "ValidityPeriod");
 
         var situationExchange = new SituationExchange
         {
-            CreationTime = (string)doc.Root.Element(ns + "CreationTime"),
-            ParticipantRef = (string)doc.Root.Element(ns + "ParticipantRef"),
-            Priority = (int?)doc.Root.Element(ns + "Priority"),
-            SituationNumber = (string)doc.Root.Element(ns + "SituationNumber"),
-            Version = (string)doc.Root.Element(ns + "Version"),
-            VersionedAtTime = (string)doc.Root.Element(ns + "VersionedAtTime"),
-            SummaryNo = doc.Root.Elements(ns + "Summary")
+            CreationTime = (string?)doc.Root?.Element(ns + "CreationTime"),
+            ParticipantRef = (string?)doc.Root?.Element(ns + "ParticipantRef"),
+            Priority = (int?)doc.Root?.Element(ns + "Priority"),
+            SituationNumber = (string?)doc.Root?.Element(ns + "SituationNumber"),
+            Version = (string?)doc.Root?.Element(ns + "Version"),
+            VersionedAtTime = (string?)doc.Root?.Element(ns + "VersionedAtTime"),
+            Progress = (string?)doc.Root?.Element(ns + "Progress"),
+            ReportType = (string?)doc.Root?.Element(ns + "ReportType"),
+            StartTime = (string?)validityPeriod?.Element(ns + "StartTime"),
+            EndTime = (string?)validityPeriod?.Element(ns + "EndTime"),
+            SummaryNo = doc.Root?.Elements(ns + "Summary")
+                .FirstOrDefault(e => e.Attribute(XNamespace.Xml + "lang")?.Value == "NO")?.Value,
+            DescriptionNo = doc.Root?.Elements(ns + "Description")
                 .FirstOrDefault(e => e.Attribute(XNamespace.Xml + "lang")?.Value == "NO")?.Value
         };
-
-        var journeys = doc.Root
+    
+        var stopPointEntries = doc.Root?
             .Descendants(ns + "AffectedVehicleJourney")
-            .Select(j => new AffectedVehicleJourney
-            {
-                DatedVehicleJourneyRef = (string)j.Element(ns + "DatedVehicleJourneyRef"),
-                StopPointRef = (string)j
-                    .Descendants(ns + "AffectedStopPoint")
-                    .FirstOrDefault()?.Element(ns + "StopPointRef"),
-                StopConditions = string.Join(",", j
-                    .Descendants(ns + "AffectedStopPoint")
-                    .Elements(ns + "StopCondition")
-                    .Select(sc => sc.Value))
-            }).ToList();
+            .SelectMany(j => j
+                .Descendants(ns + "AffectedStopPoint")
+                .Select(sp => new AffectedStopPointEntry
+                {
+                    DatedVehicleJourneyRef = (string?)j.Element(ns + "DatedVehicleJourneyRef"),
+                    StopPointRef = (string?)sp.Element(ns + "StopPointRef"),
+                    StopConditions = sp.Elements(ns + "StopCondition").Select(sc => sc.Value).ToList()
+                })
+            ).ToList();
 
-        situationExchange.AffectedJourneys = journeys;
+        situationExchange.AffectedStopPoints = stopPointEntries;
         return situationExchange;
     }
 }
