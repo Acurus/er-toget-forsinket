@@ -26,6 +26,9 @@ jobs:
           cd ~/er-toget-forsinket
           echo "Starting deployment..."
 
+          # Export environment variable
+          export DOPPLER_TOKEN=${{ secrets.DOPPLER_TOKEN }}
+
           # Setup SSH agent
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/github
@@ -34,12 +37,11 @@ jobs:
           git fetch --all --prune
           git reset --hard origin/master
           git clean -fd
+
           
           # Clean up old containers
           doppler run -- docker compose down --remove-orphans
           
-          # Export environment variable
-          export DOPPLER_TOKEN=${{ secrets.DOPPLER_TOKEN }}
 
 
           # Rebuild and start
