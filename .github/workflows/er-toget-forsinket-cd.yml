@@ -1,0 +1,47 @@
+name: Deploy er-toget-forsinket.no
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+  
+    - name: Checkout the files
+      uses: actions/checkout@v2
+
+    - name: Deploy to TrueNAS
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST_DNS }}
+        port: ${{ secrets.SSH_PORT }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd ~/er-toget-forsinket
+          echo "Starting deployment..."
+
+          # Setup SSH agent
+          eval "$(ssh-agent -s)"
+          ssh-add ~/.ssh/github
+          
+          # Get latest changes
+          git fetch --all --prune
+          git reset --hard origin/master
+          git clean -fd
+          
+          # Clean up old containers
+          doppler run -- docker compose down --remove-orphans
+          
+          # Export environment variable
+          export DOPPLER_TOKEN=${{ secrets.DOPPLER_TOKEN }}
+
+          # Rebuild and start
+          doppler run -- docker compose up -d --build
+          
+          echo "Deployment complete"
+          docker compose ps
