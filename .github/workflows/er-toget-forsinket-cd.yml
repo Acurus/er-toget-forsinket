@@ -40,7 +40,7 @@ jobs:
           
           # Export environment variable
           export DOPPLER_TOKEN=${{ secrets.DOPPLER_TOKEN }}
-          doppler run -- printenv
+
 
           # Rebuild and start
           doppler run -- docker compose up -d --build
