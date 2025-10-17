@@ -5,11 +5,10 @@ import type { DelayedTrainsResponse } from "$lib/models/DelayedTrainsResponse";
 export async function load() {
     const response = await apiRequest<DelayedTrainsResponse>(
         'GET',
-        '/statistics/get_delayed_trains',
-        `${env.DELAYED_TRAINS_TOKEN}`
+        '/statistics/get_delayed_trains'
     );
     return {
         "numberOfdelayedTrains": response.numberOfdelayedTrains,
-        "timeSinceLastDelayMinutes": response.timeSinceLastDelayMinutes
+        "timeSinceLastDelayMinutes": response.numberOfAffectedStops
     };
 }
