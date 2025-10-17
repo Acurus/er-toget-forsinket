@@ -14,6 +14,7 @@ var erTogetForsinketOrigins = "_erTogetForsinketOrigins";
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = Db.BuildConnectionString(builder);
 
+builder.Services.AddMemoryCache();
 builder.Services.AddOptions<AppSettings>()
     .Configure<IConfiguration>((settings, configuration) => { settings.ExplicitBinding(configuration); });
 builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
