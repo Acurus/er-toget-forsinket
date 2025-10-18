@@ -6,7 +6,7 @@ export default async function apiRequest<T>(
 	authToken?: string,
 	body?: any
 ): Promise<T> {
-	// console.log(`${method} - ${endpoint} - ${JSON.stringify(body)}`);
+	// console.log(`${method} - ${env.PUBLIC_BACKEND_BASE_URL}${endpoint} - ${JSON.stringify(body)}`);
 
 	const options: RequestInit = {
 		method,
