@@ -32,13 +32,13 @@ public class StatisticsService : IStatisticsService
         var result = await _database.Database
             .SqlQueryRaw<DelayedTrainsResult>(@"
         SELECT 
-            COUNT(DISTINCT asp.stop_point_ref) AS NumberOfAffectedStops, 
-            COUNT(DISTINCT asp.dated_vehicle_journey_ref) AS NumberOfDelayedTrains
+            COUNT(DISTINCT asp.stop_point_ref) AS ""NumberOfAffectedStops"", 
+            COUNT(DISTINCT asp.dated_vehicle_journey_ref) AS ""NumberOfDelayedTrains""
         FROM train_delays.situation_exchange se
         LEFT JOIN train_delays.affected_stop_point asp 
             ON se.""Id"" = asp.""SituationExchangeId""
         WHERE se.end_time::timestamptz > CURRENT_TIMESTAMP
-          AND se.report_type = 'incident';
+          AND se.report_type = 'incident'
     ")
             .AsNoTracking()
             .FirstAsync();

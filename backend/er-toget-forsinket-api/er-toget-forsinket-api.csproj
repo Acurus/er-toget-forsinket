@@ -5,7 +5,6 @@
         <RootNamespace>er-toget-forsinket-api</RootNamespace>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <UserSecretsId>c9a02fa7-8f2a-440a-b7b0-a76e7377a622</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
