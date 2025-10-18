@@ -3,7 +3,7 @@ import { env } from '$env/dynamic/public';
 export default async function apiRequest<T>(
 	method: 'GET' | 'POST' | 'PUT' | 'DELETE',
 	endpoint: string,
-	authToken: string,
+	authToken?: string,
 	body?: any
 ): Promise<T> {
 	// console.log(`${method} - ${endpoint} - ${JSON.stringify(body)}`);

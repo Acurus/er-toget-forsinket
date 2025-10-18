@@ -1,4 +1,3 @@
-import { env } from '$env/dynamic/private';
 import apiRequest from "$lib/api/apiRequests";
 import type { DelayedTrainsResponse } from "$lib/models/DelayedTrainsResponse";
 
@@ -9,6 +8,6 @@ export async function load() {
     );
     return {
         "numberOfdelayedTrains": response.numberOfdelayedTrains,
-        "timeSinceLastDelayMinutes": response.numberOfAffectedStops
+        "numberOfAffectedStops": response.numberOfAffectedStops
     };
 }
